@@ -1,0 +1,15 @@
+syntax = "proto3";
+//package tutorial;
+// [END declaration]
+
+// [START java_declaration]
+option java_package = "com.github.begoodyourself.sample.api.protos";
+option java_outer_classname = "CalServiceProto";
+// [END java_declaration]
+message FibonacciReqProto{
+   int32 input  = 1;
+}
+
+message FibonacciRespProto{
+   int64 result = 1;
+}

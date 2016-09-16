@@ -1,0 +1,23 @@
+syntax = "proto3";
+//package tutorial;
+// [END declaration]
+
+// [START java_declaration]
+option java_package = "com.github.begoodyourself.api.protos";
+option java_outer_classname = "ProtobufRpcMessage";
+// [END java_declaration]
+message RpcRequestProto{
+ string messageId             = 1;
+ string requestService        = 2;
+ string requestMethod         = 3;
+ string requestParameterProto = 4;
+ bytes  requestBody           = 5;
+}
+
+message RpcResponseProto{
+  string messageId     = 1;
+  int32  errorcode     = 2;
+  string errormsg      = 3;
+  string responseProto = 4;
+  bytes  responseBody  = 5;
+}
