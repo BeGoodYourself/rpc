@@ -11,4 +11,5 @@
     http://www.springframework.org/schema/aop
     http://www.springframework.org/schema/aop/spring-aop.xsd">
     <bean id="consumerContext" class="com.github.begoodyourself.consumer.ConsumerContext"/>
+    <context:component-scan base-package="com.github.begoodyourself.*" />
 </beans>
