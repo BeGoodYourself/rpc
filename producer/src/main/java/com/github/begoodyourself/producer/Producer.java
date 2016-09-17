@@ -5,7 +5,9 @@ import com.github.begoodyourself.api.bo.RpcRequestMessage;
 import com.github.begoodyourself.api.bo.RpcResponseMessage;
 import com.github.begoodyourself.api.codec.ProtobufRequestEncoder;
 import com.github.begoodyourself.api.codec.ProtobufResponseDecoder;
+import com.github.begoodyourself.api.util.StringUtils;
 import com.github.begoodyourself.producer.bo.SyncResponseResult;
+import com.github.begoodyourself.registry.ServiceDiscovery;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
@@ -26,13 +28,18 @@ public class Producer implements RpcEventListener,Container {
     protected EventLoopGroup boss ;
     protected ChannelHandlerContext channelHandlerContext;
     protected ConcurrentHashMap<String, SyncResponseResult> syncResponseResultCaches = new ConcurrentHashMap<>();
+    private ServiceDiscovery serviceDiscovery;
+
+    public void setServiceDiscovery(ServiceDiscovery serviceDiscovery) {
+        this.serviceDiscovery = serviceDiscovery;
+    }
 
     @Override
     public void start(){
         if(boss == null){
             boss = new NioEventLoopGroup();
         }
-
+        String[] servers = serviceDiscovery.discover().split(",");
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(boss).channel(NioSocketChannel.class).handler(new ChannelInitializer<SocketChannel>() {
             @Override
@@ -40,7 +47,7 @@ public class Producer implements RpcEventListener,Container {
                 ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0,4,0,4)
                 ,new ProtobufRequestEncoder(), new ProtobufResponseDecoder(), new ProducerHandler().registerRpcEventListener(Producer.this));
             }
-        }).connect("127.0.0.1", 8899);
+        }).connect(servers[0], Integer.parseInt(servers[1]));
     }
 
     @Override
