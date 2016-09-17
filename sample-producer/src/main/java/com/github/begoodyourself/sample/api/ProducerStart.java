@@ -12,11 +12,12 @@ import com.github.begoodyourself.sample.api.service.CalService;
 public class ProducerStart {
     public static void main(String[] args) {
         Producer producer = new Producer();
+        producer.start();
         try {
             CalService calService = ( CalService )CglibProxy.proxy( producer, CalService.class );
-            System.out.println( calService.Fibonacci( 100 ));
-            System.out.println( calService.Fibonacci2( 100 ));
-            System.out.println( calService.Fibonacci3( 100 ));
+            System.out.println( calService.Fibonacci( 10 ));
+            System.out.println( calService.Fibonacci2( 10 ));
+            System.out.println( calService.Fibonacci3( 10 ));
         } catch (Exception e) {
             e.printStackTrace( );
         }

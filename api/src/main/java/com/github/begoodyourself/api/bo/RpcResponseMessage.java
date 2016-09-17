@@ -34,16 +34,16 @@ public class RpcResponseMessage extends RpcMessage<RpcResponseMessage>{
     @Override
     public RpcResponseMessage decode(ByteBuf src) {
         try {
-            RpcResponseProto responseProto = RpcResponseProto.newBuilder().mergeFrom(src.array(), src.arrayOffset(), src.readableBytes()).build();
+            RpcResponseProto responseProto = RpcResponseProto.newBuilder().mergeFrom(toByteArray(src)).build();
             messageId = responseProto.getMessageId();
             errorcode = responseProto.getErrorcode();
             errMessage = responseProto.getErrormsg();
-            body = (GeneratedMessageV3) ProtoUtils.find(responseProto.getResponseProto()).toBuilder().mergeFrom(responseProto.getResponseBody());
+            body = (GeneratedMessageV3) ProtoUtils.find(responseProto.getResponseProto()).toBuilder().mergeFrom(responseProto.getResponseBody()).build();
+            return this;
         } catch (Exception e) {
             e.printStackTrace();
             throw new RpcRuntimeException(e, ErrorCode.SYSTEM_ERROR);
         }
-        return null;
     }
 
     public int getErrorcode() {

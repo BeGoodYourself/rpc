@@ -19,7 +19,7 @@ public class SyncResponseResult {
     public Object getResult()throws Exception{
         try {
             lock.lock();
-            sig.await(1, TimeUnit.SECONDS);
+            sig.await(100, TimeUnit.SECONDS);
             if(rpcResponseMessage != null){
                 return rpcResponseMessage.getBody();
             }

@@ -2,6 +2,8 @@ package com.github.begoodyourself.api.bo;
 
 import com.google.protobuf.GeneratedMessageV3;
 
+import java.lang.annotation.*;
+
 /**
  * Created with rpc
  * AUTHOR ; BEGOODYOURSELF

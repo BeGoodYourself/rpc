@@ -32,11 +32,11 @@ public class RpcRequestMessage extends RpcMessage<RpcRequestMessage>{
     @Override
     public RpcRequestMessage decode(ByteBuf src) {
         try {
-            RpcRequestProto request =  RpcRequestProto.newBuilder().mergeFrom(src.array(), src.arrayOffset(), src.readableBytes()).build();
+            RpcRequestProto request =  RpcRequestProto.newBuilder().mergeFrom(toByteArray(src)).build();
             messageId = request.getMessageId();
             requestService = request.getRequestService();
             requestMethod = request.getRequestMethod();
-            body = (GeneratedMessageV3) ProtoUtils.find(request.getRequestParameterProto()).toBuilder().mergeFrom(request.getRequestBody());
+            body = (GeneratedMessageV3) ProtoUtils.find(request.getRequestParameterProto()).toBuilder().mergeFrom(request.getRequestBody()).build();
             return this;
         } catch (Exception e) {
             e.printStackTrace();
